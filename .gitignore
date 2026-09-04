@@ -1,0 +1,58 @@
+# Target & Build Output
+target/
+**/target/
+build/
+**/build/
+out/
+bin/
+dist/
+
+# IDE & Editor Settings
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Logs & Temporary Files
+*.log
+logs/
+*.tmp
+*.bak
+
+# Environment & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# Dependency directories (Node / Java)
+node_modules/
+**/node_modules/
+
+# Maven / Package Manager Output
+backend/HELP.md
+.mvn/wrapper/maven-wrapper.jar
+
+# Database files
+*.db
+*.sqlite
+*.h2.db
