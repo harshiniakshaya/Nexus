@@ -1,12 +1,12 @@
 package com.nexus.backend.service;
 
 import com.nexus.backend.model.Category;
-
-import java.util.List;
+import com.nexus.backend.payload.CategoryDTO;
+import com.nexus.backend.payload.CategoryResponse;
 
 public interface CategoryService {
-    List<Category> getAllCategories();
-    void createCategory(Category category);
-    String deleteCategory(Long categoryId);
-    Category updateCategory(Category category, Long categoryId);
+    CategoryResponse getAllCategories();
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
+    CategoryDTO deleteCategory(Long categoryId);
+    CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
 }
