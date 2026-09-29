@@ -1,5 +1,6 @@
 package com.nexus.backend.service;
 
+import com.nexus.backend.exceptions.APIException;
 import com.nexus.backend.exceptions.ResourceNotFoundException;
 import com.nexus.backend.model.Category;
 import com.nexus.backend.model.Product;
@@ -44,15 +45,29 @@ public class ProductServiceImpl implements ProductService{
         Category category =  categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
-        Product product = modelMapper.map(productDTO, Product.class);
-        product.setImage("default.png");
-        product.setCategory(category);
-        double price = product.getPrice() != null ? product.getPrice() : 0.0;
-        double discount = product.getDiscount() != null ? product.getDiscount() : 0.0;
-        double specialPrice = price - ((discount * 0.01) * price);
-        product.setSpecialPrice(specialPrice);
-        Product savedProduct = productRepository.save(product);
-        return modelMapper.map(savedProduct, ProductDTO.class);
+        // Check if the product is already present or not!
+        boolean isProductNotPresent = true;
+        List<Product> products = category.getProducts();
+        for (Product value : products) {
+            if (value.getProductName().equals(productDTO.getProductName())) {
+                isProductNotPresent = false;
+                break;
+            }
+        }
+
+        if (isProductNotPresent){
+            Product product = modelMapper.map(productDTO, Product.class);
+            product.setImage("default.png");
+            product.setCategory(category);
+            double price = product.getPrice() != null ? product.getPrice() : 0.0;
+            double discount = product.getDiscount() != null ? product.getDiscount() : 0.0;
+            double specialPrice = price - ((discount * 0.01) * price);
+            product.setSpecialPrice(specialPrice);
+            Product savedProduct = productRepository.save(product);
+            return modelMapper.map(savedProduct, ProductDTO.class);
+        } else{
+            throw new APIException("Product already exists!");
+        }
     }
 
     @Override
@@ -61,6 +76,12 @@ public class ProductServiceImpl implements ProductService{
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .toList();
+
+        // Check if the products size is 0
+        if (products.isEmpty()){
+            throw new APIException("No products found!");
+        }
+
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDTOS);
         return productResponse;
@@ -76,6 +97,11 @@ public class ProductServiceImpl implements ProductService{
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .toList();
 
+        // Check if the products size is 0
+        if (products.isEmpty()){
+            throw new APIException("No products found!");
+        }
+
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDTOS);
         return productResponse;
@@ -87,6 +113,11 @@ public class ProductServiceImpl implements ProductService{
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .toList();
+
+        // Check if the products size is 0
+        if (products.isEmpty()){
+            throw new APIException("No products found!");
+        }
 
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDTOS);
